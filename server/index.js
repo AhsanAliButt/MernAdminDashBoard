@@ -10,6 +10,8 @@ import connectDB from "./src/config/mongoos.js";
 // import Routes
 import generalRoutes from "./src/routes/general.js";
 import clientRoutes from "./src/routes/client.js";
+import salesRoutes from "./src/routes/sales.js";
+import managementRoutes from "./src/routes/management.js";
 
 // "CONFIGURATION"
 dotenv.config();
@@ -28,9 +30,9 @@ connectDB();
 // "ROUTES"
 
 app.use("/client", clientRoutes);
-// app.use("/managment", managmentRoutes);
+app.use("/management", managementRoutes);
 app.use("/general", generalRoutes);
-// app.use("/sales", salesRoutes);
+app.use("/sales", salesRoutes);
 
 //RUn Server
 app.listen(PORT, (res, req) => {
