@@ -20,7 +20,6 @@ const Daily = () => {
   const { data } = useGetSalesQuery();
   const theme = useTheme();
   const [formattedData] = useMemo(() => {
-    console.log("Data?????", data);
     if (!data) return [];
     const { dailyData } = data;
     const totalSalesLine = {

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
+import Transaction from "../models/Transaction.js";
 
 export const getAdmins = async (req, res) => {
   try {
@@ -12,23 +13,21 @@ export const getAdmins = async (req, res) => {
 
 export const getUserPerformance = async (req, res) => {
   try {
-    const { id } = req.prams;
+    const { id } = req.params;
+
     const userWithStats = await User.aggregate([
-      {
-        $match: { _id: new mongoose.Types.ObjectId(id) },
-      },
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
       {
         $lookup: {
-          from: "affiliateStats",
+          from: "affiliatestats",
           localField: "_id",
           foreignField: "userId",
-          as: "affilateStats",
+          as: "affiliateStats",
         },
       },
-      {
-        $unwind: "$affiliateStats",
-      },
+      { $unwind: "$affiliateStats" },
     ]);
+
     const saleTransactions = await Promise.all(
       userWithStats[0].affiliateStats.affiliateSales.map((id) => {
         return Transaction.findById(id);
@@ -37,10 +36,10 @@ export const getUserPerformance = async (req, res) => {
     const filteredSaleTransactions = saleTransactions.filter(
       (transaction) => transaction !== null
     );
-    res.status(200).json({
-      user: userWithStats[0],
-      sales: filteredSaleTransactions,
-    });
+
+    res
+      .status(200)
+      .json({ user: userWithStats[0], sales: filteredSaleTransactions });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

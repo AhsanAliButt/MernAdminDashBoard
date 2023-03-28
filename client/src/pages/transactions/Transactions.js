@@ -17,7 +17,7 @@ const Transactions = () => {
     sort: JSON.stringify(sort),
     search,
   });
-  console.log("TRANSACTION", data);
+
   const theme = useTheme();
   const columns = [
     {

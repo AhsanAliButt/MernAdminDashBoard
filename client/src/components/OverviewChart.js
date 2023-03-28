@@ -4,13 +4,10 @@ import { useTheme } from "@mui/material";
 import { FormControl, MenuItem, InputLabel, Box, Select } from "@mui/material";
 import { useGetSalesQuery } from "../redux/api/api";
 const OverviewChart = ({ isDashboard = false, view, LineData }) => {
-  // console.log("LineData", LineData);
   const theme = useTheme();
-  // console.log("Overview", view);
 
   const { data, isLoading } = useGetSalesQuery();
   const [totalSalesLine, totalUnitsLine] = useMemo(() => {
-    console.log("Data?????", data);
     if (!data) return [];
     const { monthlyData } = data;
     const totalSalesLine = {
@@ -98,6 +95,7 @@ const OverviewChart = ({ isDashboard = false, view, LineData }) => {
         }}
         yFormat=" >-.2f"
         curve="catmullRom"
+        enableArea={isDashboard}
         axisTop={null}
         axisRight={null}
         axisBottom={{
@@ -115,6 +113,7 @@ const OverviewChart = ({ isDashboard = false, view, LineData }) => {
         }}
         axisLeft={{
           orient: "left",
+          tickValues: 5,
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
